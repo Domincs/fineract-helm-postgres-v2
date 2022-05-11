@@ -1,0 +1,30 @@
+fineract_backend:
+  image:
+    name: "oaftech.azurecr.io/fineract-be"
+    tag: "oneacrefund"
+
+fineract_frontend:
+  image:
+    name: "oaftech.azurecr.io/fineract-fe"
+    tag: "oneacrefund"
+
+postgres:
+  auth:
+    password: ""
+    postgresPassword: ""
+
+commonconfig:
+    FINERACT_REST_DOMAIN: ""
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: "kong"
+    konghq.com/strip-path: "true"
+  tls:
+    - hosts:
+        - {{ .Values.ingress.wildcard | quote }}
+      secretName: {{ .Values.ingress.tls_secret }}
+
+storageClassName: ""
+accessModes: ""

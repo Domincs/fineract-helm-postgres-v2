@@ -1,0 +1,25 @@
+{{ if .Values.fineractreport.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "fineractreportUI.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: fineract-report-ui
+    tier: frontend
+spec:
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    name: http
+    port: 80
+    targetPort: 80
+  - protocol: TCP
+    name: https
+    port: 443
+    targetPort: 443
+  selector:
+    app: fineract-report-ui
+    tier: frontend
+    instance: {{ .Release.Name }}
+{{- end -}}

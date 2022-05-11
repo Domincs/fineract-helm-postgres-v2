@@ -1,0 +1,75 @@
+{{ if .Values.fineractreport.enabled }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ template "fineract.report.fullname" . }}
+  labels:
+    app: fineract-report
+    tier: backend
+spec:
+  selector:
+    matchLabels:
+      app: fineract-report
+      tier: backend
+      instance: {{ .Release.Name }}
+  replicas: {{ .Values.fineractreport.replicaCount }}
+  serviceName: fineract-report
+  template:
+    metadata:
+      labels:
+        app: fineract-report
+        tier: backend
+        instance: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: fineract-report
+          image: "{{ .Values.fineract_backend.image.name }}:{{ .Values.fineract_backend.image.tag }}"
+          imagePullPolicy: {{ .Values.imagePullPolicy}}
+          ports:
+            - name: job-port
+              containerPort: 8443
+            - name: http
+              containerPort: 8080
+          env:
+            - name: FINERACT_DEFAULT_TENANTDB_HOSTNAME
+              value: {{ include "postgres_host" . }}
+            - name: FINERACT_DEFAULT_TENANTDB_UID
+              value: {{ include "postgres_user" . }}
+            - name: FINERACT_DEFAULT_TENANTDB_PWD
+              value: {{ .Values.postgres.auth.password | quote }}
+            - name: fineract_tenants_uid
+              value: {{ include "postgres_user" . }}
+            - name: fineract_tenants_pwd
+              value: {{ .Values.postgres.auth.password | quote }}
+            - name: fineract_tenants_url
+              value: {{ include "postgres_url" . }}
+            - name: FINERACT_DEFAULT_TENANTDB_PORT
+              value: "{{ .Values.global.db.FINERACT_DEFAULT_TENANTDB_PORT }}"
+            - name: fineract.allowJobs
+              value: "false"
+          args:
+            - sh
+            - -c
+            - java -Xmx2048m -Djava.security.egd=file:/dev/./urandom -Djava.net.preferIPv4Stack=true --illegal-access=permit --add-exports=java.base/jdk.internal.misc=ALL-UNNAMED --add-exports=java.base/sun.nio.ch=ALL-UNNAMED -jar fineract-provider.jar --spring.profiles.active=basicauth
+          readinessProbe:
+            httpGet:
+              path: /fineract-provider/actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 90
+            timeoutSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /fineract-provider/actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 90
+            timeoutSeconds: 10
+          volumeMounts:
+            - name: fineract-report
+              mountPath: /opt/fineract/logs
+          resources:
+            {{- .Values.fineractreport.resources | toYaml | nindent 12 }}
+      volumes:
+        - name: fineract-report
+          persistentVolumeClaim:
+            claimName: fineract-report-pvc
+{{- end -}}

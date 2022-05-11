@@ -1,0 +1,124 @@
+fineract_backend:
+  image:
+    # Fineract backend image name
+    name: ""
+    # Fineract backend image tag
+    tag: ""
+
+# Settings for Fineract job backend microservice
+fineractjob:
+  enabled: false
+  name: fineractjob
+  # Number of Fineract job pods
+  replicaCount: 1
+  # Resource settings for Fineract job backend pods
+  resources:
+    limits:
+      cpu: "1000m"
+      memory: "2Gi"
+
+# Settings for Fineract report backend microservice
+fineractreport:
+  enabled: false
+  name: fineractreport
+  # Number of Fineract report pods
+  replicaCount: 1
+  # Resource settings for Fineract report backend pods
+  resources:
+    limits:
+      cpu: "1000m"
+      memory: "2Gi"
+
+# Settings for Fineract rest backend microservice
+fineractrest:
+  enabled: true
+  name: fineractrest
+  # Number of Fineract rest pods
+  replicaCount: 1
+  # Resource settings for Fineract rest backend pods
+  resources:
+    limits:
+      cpu: "1000m"
+      memory: "2Gi"
+
+fineract_frontend:
+  image:
+    # Fineract frontend image name
+    name: ""
+    # Fineract frontend image tag
+    tag: ""
+
+# Settings for Fineract rest frontend microservice
+fineractrestUI:
+  name: fineractrestui
+  # Number of Fineract rest UI pods
+  replicaCount: 1
+  # Resource settings for Fineract rest UI pods
+  resources:
+    limits:
+      cpu: "100m"
+      memory: "100Mi"
+
+# Settings for Fineract job frontend microservice
+fineractjobUI:
+  name: fineractjobui
+  # Number of Fineract job UI pods
+  replicaCount: 1
+  # Resource settings for Fineract job UI pods
+  resources:
+    limits:
+      cpu: "100m"
+      memory: "100Mi"
+
+# Settings for Fineract report frontend microservice
+fineractreportUI:
+  name: fineractreportui
+  # Number of Fineract report UI pods
+  replicaCount: 1
+  # Resource settings for Fineract report UI pods
+  resources:
+    limits:
+      cpu: "100m"
+      memory: "100Mi"
+
+commonconfig:
+  FINERACT_BASE_URL: /fineract-provider/api/v1
+  # Domain name for Fineract rest UI
+  FINERACT_REST_DOMAIN: ""
+  # Domain name for Fineract job UI
+  FINERACT_JOB_DOMAIN: ""
+  # Domain name for Fineract report UI
+  FINERACT_REPORT_DOMAIN: ""
+
+global:
+  db:
+    # DB name for tenants db
+    tenantsDb: fineract_tenants
+    # DB name for defaults db
+    defaultDb: fineract_default
+    FINERACT_DEFAULT_TENANTDB_PORT: "5432"
+
+postgres:
+  enabled: true
+  hostname: ""
+  auth:
+    # Please change these...
+    rootPassword: ""
+    # Please change these...
+    password: ""
+    # Fineract db user
+    username: ""
+    port: "5432"
+
+
+# StorageClass name for PVC
+storageClassName: ""
+# Access Modes for PVC
+accessModes: ""
+imagePullPolicy: "Always"
+
+ingress:
+  # -- Create Ingress?
+  enabled: false
+  wildcard: ""
+  tls_secret: ""

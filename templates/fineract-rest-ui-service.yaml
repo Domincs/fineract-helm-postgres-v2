@@ -1,0 +1,25 @@
+{{ if .Values.fineractrest.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "fineractrestUI.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: fineract-rest-ui
+    tier: frontend
+spec:
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    name: http
+    port: 80
+    targetPort: 80
+  - protocol: TCP
+    name: https
+    port: 443
+    targetPort: 443
+  selector:
+    app: fineract-rest-ui
+    tier: frontend
+    instance: {{ .Release.Name }}
+{{- end -}}
