@@ -48,22 +48,29 @@ spec:
               value: "{{ .Values.global.db.FINERACT_DEFAULT_TENANTDB_PORT }}"
             - name: fineract.allowJobs
               value: "false"
+            {{- if .Values.fineractrest.extraEnv }}
+            {{- range $key, $value := .Values.fineractrest.extraEnv }}
+            - name: {{ $key | quote}}
+              value: |-
+                {{- tpl $value $ | nindent 16 }}
+            {{- end }}
+            {{- end }}
           args:
             - sh
             - -c
             - java -Xmx2048m -Djava.security.egd=file:/dev/./urandom -Djava.net.preferIPv4Stack=true --illegal-access=permit --add-exports=java.base/jdk.internal.misc=ALL-UNNAMED --add-exports=java.base/sun.nio.ch=ALL-UNNAMED -jar fineract-provider.jar --spring.profiles.active=basicauth
-          readinessProbe:
-            httpGet:
-              path: /fineract-provider/actuator/health/readiness
-              port: 8080
-            initialDelaySeconds: 90
-            timeoutSeconds: 5
-          livenessProbe:
-            httpGet:
-              path: /fineract-provider/actuator/health/liveness
-              port: 8080
-            initialDelaySeconds: 90
-            timeoutSeconds: 10
+          # readinessProbe:
+          #   httpGet:
+          #     path: /fineract-provider/actuator/health/readiness
+          #     port: 8080
+          #   initialDelaySeconds: 90
+          #   timeoutSeconds: 5
+          # livenessProbe:
+          #   httpGet:
+          #     path: /fineract-provider/actuator/health/liveness
+          #     port: 8080
+          #   initialDelaySeconds: 90
+          #   timeoutSeconds: 10
           volumeMounts:
             - name: fineract-rest
               mountPath: /opt/fineract/logs

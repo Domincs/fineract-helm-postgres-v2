@@ -104,5 +104,5 @@
 {{- end -}}
 
 {{- define "postgres_url" -}}
-jdbc:postgresql://{{ .Values.postgres.hostName }}:{{ .Values.postgres.port }}/{{ .Values.global.db.tenantsDb }}
+jdbc:postgresql://{{ .Values.postgres.hostname }}:{{ .Values.postgres.port }}/{{ .Values.global.db.tenantsDb }}
 {{- end -}}
