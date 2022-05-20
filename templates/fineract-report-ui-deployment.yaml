@@ -1,4 +1,4 @@
-{{ if .Values.fineractreport.enabled }}
+{{- if and .Values.fineractreport.enabled .Values.fineractreportUI.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:

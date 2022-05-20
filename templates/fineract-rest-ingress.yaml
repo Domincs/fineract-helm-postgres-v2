@@ -1,8 +1,8 @@
-{{- if and .Values.ingress.enabled .Values.fineractjobUI.enabled -}}
+{{- if .Values.fineractrest.ingress.enabled }}
 kind: Ingress
 apiVersion: networking.k8s.io/v1
 metadata:
-  name: fineract-job-ingress
+  name: {{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
   annotations:
     kubernetes.io/tls-acme: "true"
@@ -10,18 +10,18 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: {{ .Values.commonconfig.FINERACT_JOB_DOMAIN | quote }}
+    - host: {{ .Values.commonconfig.FINERACT_REST_BACKEND_DOMAIN | quote }}
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: {{ template "fineractjobUI.fullname" . }}
+                name: {{ template "fineract.rest.fullname" . }}
                 port:
-                  number: 443
+                  number: 8443
   tls:
     - hosts:
-        - {{ .Values.ingress.wildcard | quote }}
+        - {{ .Values.commonconfig.FINERACT_REST_BACKEND_DOMAIN | quote }}
       secretName: {{ .Values.ingress.tls_secret }}
 {{- end -}}

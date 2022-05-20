@@ -1,4 +1,4 @@
-{{ if .Values.fineractrest.enabled }}
+{{ if and .Values.fineractrest.enabled .Values.fineractrestUI.enabled -}}
 apiVersion: v1
 kind: Service
 metadata:

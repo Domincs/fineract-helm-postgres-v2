@@ -1,6 +1,5 @@
 # fineract
 
-![Version: 0.1.7](https://img.shields.io/badge/Version-0.1.7-informational?style=flat-square)
 
 Apache Fineract: A Platform for Microfinance
 
@@ -10,11 +9,11 @@ Apache Fineract: A Platform for Microfinance
 
 | Name | Email | Url |
 | ---- | ------ | --- |
-| Yann-J | yann.jouanique@gmail.com |  |
+| Dominic Chingoma | dominicchingoma@gmail.com |  |
 
 ## Source Code
 
-* <https://github.com/one-acre-fund/oaf-public-charts/tree/main/charts/fineract>
+* <https://github.com/Domincs/fineract-helm-postgres-v2>
 
 ## Requirements
 
@@ -28,10 +27,16 @@ Postgres Database instance
 | commonconfig.FINERACT_JOB_DOMAIN | string | `"fineract-job.oneacrefund.org"` |  |
 | commonconfig.FINERACT_REPORT_DOMAIN | string | `"fineract-report.oneacrefund.org"` |  |
 | commonconfig.FINERACT_REST_DOMAIN | string | `"fineract-rest.oneacrefund.org"` |  |
+ commonconfig.brokerUrl | string | `"tcp://fineract-activemq-svc:61616"` |  |
 | fineract_backend.image.name | string | `""` |  |
 | fineract_backend.image.tag | string | `""` |  |
 | fineract_frontend.image.name | string | `""` |  |
 | fineract_frontend.image.tag | string | `""` |  |
+| fineractactivemq.image | string | `"webcenter/activemq:5.14.3"` |  |
+| fineractactivemq.name | string | `"activemq"` |  |
+| fineractactivemq.replicaCount | int | `1` |  |
+| fineractactivemqconfig.ACTIVEMQ_MAX_MEMORY | string | `"1024"` |  |
+| fineractactivemqconfig.ACTIVEMQ_MIN_MEMORY | string | `"512"` |  |
 | fineractjob.name | string | `"fineractjob"` |  |
 | fineractjob.replicaCount | int | `1` |  |
 | fineractjob.resources.limits.cpu | string | `"1000m"` |  |
@@ -58,7 +63,7 @@ Postgres Database instance
 | fineractrestUI.resources.limits.memory | string | `"100Mi"` |  |
 | global.db.defaultDb | string | `"fineract_default"` |  |
 | global.db.tenantsDb | string | `"fineract_tenants"` |  |
-| global.db.FINERACT_DEFAULT_TENANTDB_PORT | int | `3306` |  |
+| global.db.FINERACT_DEFAULT_TENANTDB_PORT | int | `5432` |  |
 | imagePullPolicy | string | `"Always"` |  |
 | ingress.enabled | bool | `false` |  |
 | postgres.hostname | string | `""` |  |

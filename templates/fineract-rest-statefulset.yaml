@@ -46,8 +46,20 @@ spec:
               value: {{ include "postgres_url" . }}
             - name: FINERACT_DEFAULT_TENANTDB_PORT
               value: "{{ .Values.global.db.FINERACT_DEFAULT_TENANTDB_PORT }}"
+            - name: FINERACT_HIKARI_JDBC_URL
+              value: {{ include "postgres_url" . }}
+            - name: FINERACT_HIKARI_USERNAME
+              value: {{ include "postgres_user" . }}
+            - name: FINERACT_HIKARI_PASSWORD
+              value: {{ .Values.postgres.auth.password | quote }}
+            - name: FINERACT_DEFAULT_TENANTDB_UI
+              value: {{ include "postgres_user" . }}
+            - name: FINERACT_DEFAULT_TENANTDB_NAME
+              value: {{ .Values.global.db.tenantsDb }}
             - name: fineract.allowJobs
               value: "false"
+            - name: brokerUrl
+              value: {{ .Values.commonconfig.brokerUrl }}
             {{- if .Values.fineractrest.extraEnv }}
             {{- range $key, $value := .Values.fineractrest.extraEnv }}
             - name: {{ $key | quote}}
@@ -59,18 +71,18 @@ spec:
             - sh
             - -c
             - java -Xmx2048m -Djava.security.egd=file:/dev/./urandom -Djava.net.preferIPv4Stack=true --illegal-access=permit --add-exports=java.base/jdk.internal.misc=ALL-UNNAMED --add-exports=java.base/sun.nio.ch=ALL-UNNAMED -jar fineract-provider.jar --spring.profiles.active=basicauth
-          # readinessProbe:
-          #   httpGet:
-          #     path: /fineract-provider/actuator/health/readiness
-          #     port: 8080
-          #   initialDelaySeconds: 90
-          #   timeoutSeconds: 5
           # livenessProbe:
-          #   httpGet:
-          #     path: /fineract-provider/actuator/health/liveness
-          #     port: 8080
+          #   tcpSocket:
+          #     port: job-port
           #   initialDelaySeconds: 90
-          #   timeoutSeconds: 10
+          #   periodSeconds: 10
+          #   timeoutSeconds: 3
+          # readinessProbe:
+          #   tcpSocket:
+          #     port: job-port
+          #   initialDelaySeconds: 90
+          #   periodSeconds: 20
+          #   timeoutSeconds: 3
           volumeMounts:
             - name: fineract-rest
               mountPath: /opt/fineract/logs

@@ -1,4 +1,4 @@
-{{ if .Values.fineractrest.enabled }}
+{{- if and .Values.fineractrest.enabled .Values.fineractrestUI.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -27,8 +27,6 @@ spec:
           ports:
             - containerPort: 80
               name: http
-            - containerPort: 443
-              name: https
           env:
           - name: FINERACT_DOMAIN
             value: {{ .Values.commonconfig.FINERACT_REST_DOMAIN | quote }}
@@ -38,10 +36,6 @@ spec:
             value: "https://{{ template "fineract.rest.fullname" . }}:8443"
           - name: DOLLAR
             value: $
-          args:
-            - /bin/bash
-            - -c
-            - envsubst < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'
           readinessProbe:
             httpGet:
               path: /

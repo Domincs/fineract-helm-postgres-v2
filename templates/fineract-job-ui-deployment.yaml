@@ -1,4 +1,4 @@
-{{ if .Values.fineractjob.enabled }}
+{{- if and .Values.fineractjob.enabled .Values.fineractjobUI.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:

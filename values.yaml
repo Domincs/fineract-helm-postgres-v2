@@ -24,6 +24,7 @@ fineractjob:
     FINERACT_DEFAULT_TENANTDB_TIMEZONE: "Africa/Nairobi"
     FINERACT_NODE_ID: "1"
     FINERACT_HIKARI_DRIVER_SOURCE_CLASS_NAME: org.postgresql.Driver
+    FINERACT_DEFAULT_TENANTDB_IDENTIFIER: default
     FINERACT_HIKARI_MINIMUM_IDLE: "3"
     FINERACT_HIKARI_MAXIMUM_POOL_SIZE: "5"
     FINERACT_HIKARI_IDLE_TIMEOUT: "60000"
@@ -63,6 +64,7 @@ fineractreport:
     FINERACT_DEFAULT_TENANTDB_TIMEZONE: "Africa/Nairobi"
     FINERACT_NODE_ID: "1"
     FINERACT_HIKARI_DRIVER_SOURCE_CLASS_NAME: org.postgresql.Driver
+    FINERACT_DEFAULT_TENANTDB_IDENTIFIER: default
     FINERACT_HIKARI_MINIMUM_IDLE: "3"
     FINERACT_HIKARI_MAXIMUM_POOL_SIZE: "5"
     FINERACT_HIKARI_IDLE_TIMEOUT: "60000"
@@ -85,6 +87,8 @@ fineractreport:
 # Settings for Fineract rest backend microservice
 fineractrest:
   enabled: true
+  ingress:
+    enabled: false
   name: fineractrest
   # Number of Fineract rest pods
   replicaCount: 1
@@ -101,6 +105,7 @@ fineractrest:
     FINERACT_DEFAULT_TENANTDB_TIMEZONE: "Africa/Nairobi"
     FINERACT_NODE_ID: "1"
     FINERACT_HIKARI_DRIVER_SOURCE_CLASS_NAME: org.postgresql.Driver
+    FINERACT_DEFAULT_TENANTDB_IDENTIFIER: default
     FINERACT_HIKARI_MINIMUM_IDLE: "3"
     FINERACT_HIKARI_MAXIMUM_POOL_SIZE: "10"
     FINERACT_HIKARI_IDLE_TIMEOUT: "60000"
@@ -126,9 +131,12 @@ fineract_frontend:
     name: ""
     # Fineract frontend image tag
     tag: ""
+  
+  
 
 # Settings for Fineract rest frontend microservice
 fineractrestUI:
+  enabled: false
   name: fineractrestui
   # Number of Fineract rest UI pods
   replicaCount: 1
@@ -140,6 +148,7 @@ fineractrestUI:
 
 # Settings for Fineract job frontend microservice
 fineractjobUI:
+  enabled: false
   name: fineractjobui
   # Number of Fineract job UI pods
   replicaCount: 1
@@ -151,6 +160,7 @@ fineractjobUI:
 
 # Settings for Fineract report frontend microservice
 fineractreportUI:
+  enabled: false
   name: fineractreportui
   # Number of Fineract report UI pods
   replicaCount: 1
@@ -161,6 +171,7 @@ fineractreportUI:
       memory: "100Mi"
 
 commonconfig:
+  brokerUrl: tcp://fineract-activemq-svc:61616
   FINERACT_BASE_URL: /fineract-provider/api/v1
   # Domain name for Fineract rest UI
   FINERACT_REST_DOMAIN: ""
@@ -168,6 +179,7 @@ commonconfig:
   FINERACT_JOB_DOMAIN: ""
   # Domain name for Fineract report UI
   FINERACT_REPORT_DOMAIN: ""
+  FINERACT_REST_BACKEND_DOMAIN: ""
 
 global:
   db:
@@ -188,7 +200,17 @@ postgres:
     password: ""
     # Fineract db user
     username: ""
-    
+
+fineractactivemq:
+  name: activemq
+  # Activemq image
+  image: "webcenter/activemq:5.14.3"
+  # Number of activemq pods
+  replicaCount: 1
+
+fineractactivemqconfig:
+  ACTIVEMQ_MIN_MEMORY: "512"
+  ACTIVEMQ_MAX_MEMORY: "1024" 
 
 
 # StorageClass name for PVC
