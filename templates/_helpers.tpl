@@ -106,3 +106,7 @@
 {{- define "postgres_url" -}}
 jdbc:postgresql://{{ .Values.postgres.hostname }}:{{ .Values.postgres.port }}/{{ .Values.global.db.tenantsDb }}
 {{- end -}}
+
+{{- define "default_tenantdb_url" -}}
+jdbc:postgresql://{{ .Values.postgres.hostname }}:{{ .Values.postgres.port }}/{{ .Values.global.db.defaultDb }}
+{{- end -}}

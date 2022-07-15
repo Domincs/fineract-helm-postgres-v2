@@ -55,7 +55,7 @@ spec:
             - name: FINERACT_DEFAULT_TENANTDB_UI
               value: {{ include "postgres_user" . }}
             - name: FINERACT_DEFAULT_TENANTDB_NAME
-              value: {{ .Values.global.db.tenantsDb }}
+              value: {{ .Values.global.db.defaultDb }}
             - name: fineract.allowJobs
               value: "false"
             - name: brokerUrl

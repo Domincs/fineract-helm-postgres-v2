@@ -33,7 +33,7 @@ spec:
     kind: StatefulSet
     name: {{ template "fineract.rest.fullname" . }}
   minReplicas: {{ .Values.fineractrest.replicaCount }}
-  maxReplicas: 6
+  maxReplicas: 10
   metrics:
   - type: Resource
     resource:

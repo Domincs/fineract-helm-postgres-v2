@@ -86,7 +86,7 @@ fineractreport:
 
 # Settings for Fineract rest backend microservice
 fineractrest:
-  enabled: true
+  enabled: false
   ingress:
     enabled: false
   name: fineractrest
