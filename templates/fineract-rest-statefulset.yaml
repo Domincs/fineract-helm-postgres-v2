@@ -83,13 +83,23 @@ spec:
           #   initialDelaySeconds: 90
           #   periodSeconds: 20
           #   timeoutSeconds: 3
+          resources:
+            {{- .Values.fineractrest.resources | toYaml | nindent 12 }}
           volumeMounts:
             - name: fineract-rest
               mountPath: /opt/fineract/logs
-          resources:
-            {{- .Values.fineractrest.resources | toYaml | nindent 12 }}
-      volumes:
-        - name: fineract-rest
-          persistentVolumeClaim:
-            claimName: fineract-rest-pvc
+  
+  volumeClaimTemplates:
+  - metadata:
+      name: fineract-rest
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi
+          
+      # volumes:
+      #   - name: fineract-rest
+      #     persistentVolumeClaim:
+      #       claimName: fineract-rest-pvc
 {{- end -}}
