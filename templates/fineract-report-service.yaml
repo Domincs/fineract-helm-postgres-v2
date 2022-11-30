@@ -10,7 +10,7 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-  - port: 8443
+  - port: 8080
   selector:
     app: fineract-report
     tier: backend

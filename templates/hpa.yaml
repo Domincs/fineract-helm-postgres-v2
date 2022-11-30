@@ -1,4 +1,4 @@
-apiVersion: autoscaling/v2beta2
+apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: hpa-fineract-report
@@ -23,7 +23,7 @@ spec:
         type: Utilization
         averageUtilization: 70
 ---
-apiVersion: autoscaling/v2beta2
+apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: hpa-fineract-rest
@@ -48,7 +48,7 @@ spec:
         type: Utilization
         averageUtilization: 70
 ---
-apiVersion: autoscaling/v2beta2
+apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: hpa-fineract-job

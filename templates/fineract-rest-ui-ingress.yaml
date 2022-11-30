@@ -16,7 +16,7 @@ spec:
               service:
                 name: {{ template "fineractrestUI.fullname" . }}
                 port:
-                  number: 80
+                  number: 8080
   tls:
     - hosts:
         - {{ .Values.commonconfig.FINERACT_REST_DOMAIN | quote }}
